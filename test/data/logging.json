@@ -1,0 +1,8 @@
+{"configs":[
+	{"filter": "test.LoggerFactoryTest", "logLevel": "TRACE", "appenders":["defaultjs.logging.MemoryAppender"]},
+	{"filter": "test.LoggerTest", "logLevel": "TRACE", "appenders":["defaultjs.logging.MemoryAppender"]},
+	{"filter": "test.MemoryAppenderTest", "logLevel": "TRACE", "appenders":["defaultjs.logging.MemoryAppender"]},
+	{"filter": "test.HtmlAppenderTest", "logLevel": "TRACE", "appenders":["defaultjs.logging.HtmlAppender"]},
+	{"filter": "test.ConsoleAppenderTest", "logLevel": "TRACE", "appenders":["defaultjs.logging.ConsoleAppender"]},
+	{"filter": "test.InteligentBrowserAppenderTest", "logLevel": "TRACE", "appenders":["defaultjs.logging.InteligentBrowserAppender"]}
+]}
