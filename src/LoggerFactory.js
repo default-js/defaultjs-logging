@@ -52,13 +52,13 @@ const loadConfig = function(aConfig) {
 };
 
 const loadConfigRemote = function(aRemoteData) {
-	let xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (xhttp.readyState == 4)
-			setConfig(JSON.parse(response));
-	};
-	xhttp.open("get", aRemoteData.url, false);
-	return xhttp.send();
+	fetch(aRemoteData.url)
+	.then(function(aResponse){
+		return aResponse.json();
+	})
+	.then(function(config){
+		setConfig(aConfig);
+	});
 };
 
 const updateLogger = function() {
