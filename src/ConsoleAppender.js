@@ -40,5 +40,5 @@ class ConsoleAppender extends Appender{
 }
 
 const INSTANCE = new ConsoleAppender();
-Appender.register("console", INSTANCE);
+Appender.register("ConsoleAppender", INSTANCE);
 export default INSTANCE;

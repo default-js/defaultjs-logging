@@ -1,32 +1,40 @@
-import "../node_modules/dom-api-extension";
-import "../browser-index";
+import "@default-js/defaultjs-extdom";
+import { LoggerFactory, LogLevel, ConsoleAppender, MemoryAppender, HtmlAppender, InteligentBrowserAppender } from "../index";
 import logging from "./data/logging.json";
- 
 
-describe("HtmlAppenderTest", function() {	
-	beforeAll(function(){
-		window.document.body.innerHTML = window.__html__['test/sites/browser-setup.html'];		
-		this.configEntries = logging.configs.length;
-		defaultjs.logging.LoggerFactory.setConfig(logging.configs);
-		this.logger = defaultjs.logging.LoggerFactory.newLogger("test.HtmlAppenderTest");
+
+let logger = null;
+let configEntries = null;
+let logcontainer = null;
+
+describe("HtmlAppenderTest", () => {
+	beforeAll(async () => {
+
+		logcontainer = document.createElement("div");
+		logcontainer.setAttribute("data-log", "");
+		document.body.appendChild(logcontainer);
+
+		configEntries = logging.configs;
+		LoggerFactory.config(configEntries);
+		logger = LoggerFactory.newLogger("test.HtmlAppenderTest");
 	});
-	
-	it("check loaded logger configs", function(){		
-		let config = defaultjs.logging.LoggerFactory.getConfig();
-		expect(config.length).toBe(this.configEntries);
-	});  
-	
-	it("is logger correct", function(){
-		expect(this.logger).toBeDefined();
-		expect(this.logger.logLevel).toBe(defaultjs.logging.LogLevel.TRACE); 
+
+	it("is logger correct", async () => {
+		expect(logger).toBeDefined();
+		const config = await logger.config;
+		expect(config.logLevel).toBe(LogLevel.TRACE);
 	});
-	
-	it("add log entry", function(done){
+
+	it("add log entry", async () => {
 		let message = "Log info Messages:" + Date.now();
-		this.logger.logInfo(message).then((function(){
-			let entry = window.document.find(".log-entry.INFO").first();
-			expect(entry).toBeDefined();
-			done(); 
-		}).bind(this));
+		logger.logInfo(message);
+
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				let entry = logcontainer.find(".log-entry.INFO").first();
+				expect(entry).toBeDefined();
+				resolve();
+			}, 100);
+		});
 	});
 });

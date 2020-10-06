@@ -22,6 +22,6 @@ class IntelligentBrowserAppender extends Appender {
 	}
 };
 
-const INSTANCE = new InteligentBrowserAppender();
-Appender.register("intelligent", INSTANCE);
+const INSTANCE = new IntelligentBrowserAppender();
+Appender.register("IntelligentBrowserAppender", INSTANCE);
 export default INSTANCE;

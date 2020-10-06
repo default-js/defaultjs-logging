@@ -1,10 +1,18 @@
 import Appender from "./Appender";
 
 const GLOBAL = self || global || window || this || {};
-const LOG = GLOBAL.__LOG__ = [];
+const LOG = () => {
+	if(!(GLOBAL.__LOG__ instanceof Array))
+		GLOBAL.__LOG__ = [];
+	return GLOBAL.__LOG__;
+}  ;
+
+
+
 class MemoryAppender extends Appender {
-	logMessage(aMessage, anException,aLoggerName, aDate, aLogLevel) {		
-		LOG.push({
+	logMessage(aMessage, anException,aLoggerName, aDate, aLogLevel) {
+		const log = LOG();		
+		log.push({
 			"date" : aDate,
 			"logLevel" : aLogLevel,
 			"loggerName" : aLoggerName,
@@ -15,5 +23,5 @@ class MemoryAppender extends Appender {
 }; 
 
 const INSTANCE = new MemoryAppender();
-Appender.register("memory", INSTANCE);
+Appender.register("MemoryAppender", INSTANCE);
 export default INSTANCE;

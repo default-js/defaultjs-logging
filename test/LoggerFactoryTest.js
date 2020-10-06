@@ -1,33 +1,41 @@
-import "../node_modules/dom-api-extension";
-import "../browser-index";
+import "@default-js/defaultjs-extdom";
+import {LoggerFactory, LogLevel, ConsoleAppender, MemoryAppender, HtmlAppender, InteligentBrowserAppender} from "../index";
 import logging from "./data/logging.json";
 
 
-describe("LoggerFactoryTest", function() {
-	beforeAll(function(){
-		this.configEntries = logging.configs.length;
-		defaultjs.logging.LoggerFactory.setConfig(logging.configs);
-		this.logger = undefined;
+describe("LoggerFactoryTest", () => {
+	let configEntries = null;
+	let logger = null;
+
+	beforeAll(async () => {
+		configEntries = logging.configs;
+		await LoggerFactory.config(logging.configs);
+		logger = LoggerFactory.newLogger("test.LoggerTest");
 	});
 	
-	it("check load configs", function(){
+	it("check load configs", async () => {
 		
 	});
 	
-	it("check loaded logger configs", function(){		
-		let config = defaultjs.logging.LoggerFactory.getConfig();
-		expect(config.length).toBe(this.configEntries);		
+	it("check loaded logger configs", async () => {	
+			
+		let config = await LoggerFactory.config();
+		expect(config.length).toBe(configEntries.length);		
 	});
 	
-	it("new Logger", function(){
-		this.logger =defaultjs.logging.LoggerFactory.newLogger("test.LoggerFactoryTest");
-		expect(this.logger).toBeDefined();
-		expect(this.logger.logLevel).toBe(defaultjs.logging.LogLevel.TRACE); 
+	it("new Logger", async () => {
+		logger = LoggerFactory.newLogger("test.LoggerFactoryTest");
+		expect(logger).toBeDefined();
+		
+		const config = await logger.config;
+		
+		
+		expect(config.logLevel).toBe(LogLevel.TRACE); 
 	});
 	
-	it("new Logger dublicate check", function(){
-		let logger1 = defaultjs.logging.LoggerFactory.newLogger("test.LoggerFactoryTest");
-		let logger2 = defaultjs.logging.LoggerFactory.newLogger("test.LoggerFactoryTest");
+	it("new Logger dublicate check", async () => {
+		const logger1 = LoggerFactory.newLogger("test.LoggerFactoryTest");
+		const logger2 = LoggerFactory.newLogger("test.LoggerFactoryTest");
 		expect(logger1).toBeDefined();
 		expect(logger2).toBeDefined();
 		expect(logger1).toBe(logger2);

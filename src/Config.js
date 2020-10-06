@@ -1,7 +1,6 @@
 import LogLevel from "./LogLevel";
 import Appender from "./Appender";
 
-const APPENDERS = {};
 const DEFAULTCONFIG = {
 	filter: "",
 	logLevel: "NOLOG",
@@ -26,8 +25,8 @@ const loadRemote = async (url) => {
 
 const findConfig = (name, data) => {
 	let defaultConfig = DEFAULTCONFIG;
-	let actualConfig = null;
-	for (let config in data) {
+	let actualConfig = defaultConfig;
+	for (let config of data) {
 		if (isConfigActiv(name, config, actualConfig)) actualConfig = config;
 		else if (!config.filter) defaultConfig = config;
 		if (actualConfig != null && actualConfig.filter == name) return actualConfig;
@@ -36,14 +35,14 @@ const findConfig = (name, data) => {
 	return actualConfig || defaultConfig;
 };
 
-const isConfigActiv = (aLoggerName, aConfig, anActualConfig) => {
-	if (anActualConfig && anActualConfig.filter.length >= aConfig.filter.length) return false;
-	return aLoggerName.search(aConfig.filter) == 0;
+const isConfigActiv = (name, config, actualConfig) => {
+	if (config && actualConfig.filter.length >= config.filter.length) return false;
+	return name.search(config.filter) == 0;
 };
 
 const getAppenders = (appenders) => {
 	const result = [];
-	for (let key in appenders) {
+	for (let key of appenders) {
 		const appender = Appender.getAppender(key);
 		if (appender) result.push(appender);
 	}

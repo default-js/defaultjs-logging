@@ -1,6 +1,5 @@
-import "../node_modules/dom-api-extension";
-import "../browser-index";
-import LogLevel from "../src/LogLevel";
+import "@default-js/defaultjs-extdom";
+import {LogLevel} from "../index";
 
 describe("LogLevelTest", function() {
 	
@@ -82,15 +81,15 @@ describe("LogLevelTest", function() {
 		expect(LogLevel.TRACE.isIncluded(LogLevel.TRACE)).toBe(true);
 	});
 	
-	it("test LogLevel.getLogLevel", function(){
-		expect(LogLevel.getLogLevel(undefined)).toBe(LogLevel.NOLOG);
-		expect(LogLevel.getLogLevel("")).toBe(LogLevel.NOLOG);
-		expect(LogLevel.getLogLevel("IS_NOT_A_LOG_LEVEL")).toBe(LogLevel.NOLOG);
-		expect(LogLevel.getLogLevel("NOLOG")).toBe(LogLevel.NOLOG);
-		expect(LogLevel.getLogLevel("ERROR")).toBe(LogLevel.ERROR);
-		expect(LogLevel.getLogLevel("WARN")).toBe(LogLevel.WARN);
-		expect(LogLevel.getLogLevel("INFO")).toBe(LogLevel.INFO);
-		expect(LogLevel.getLogLevel("DEBUG")).toBe(LogLevel.DEBUG);
-		expect(LogLevel.getLogLevel("TRACE")).toBe(LogLevel.TRACE);
+	it("test LogLevel.lookup", function(){
+		expect(LogLevel.lookup(undefined)).toBe(LogLevel.NOLOG);
+		expect(LogLevel.lookup("")).toBe(LogLevel.NOLOG);
+		expect(LogLevel.lookup("IS_NOT_A_LOG_LEVEL")).toBe(LogLevel.NOLOG);
+		expect(LogLevel.lookup("NOLOG")).toBe(LogLevel.NOLOG);
+		expect(LogLevel.lookup("ERROR")).toBe(LogLevel.ERROR);
+		expect(LogLevel.lookup("WARN")).toBe(LogLevel.WARN);
+		expect(LogLevel.lookup("INFO")).toBe(LogLevel.INFO);
+		expect(LogLevel.lookup("DEBUG")).toBe(LogLevel.DEBUG);
+		expect(LogLevel.lookup("TRACE")).toBe(LogLevel.TRACE);
 	});
 });

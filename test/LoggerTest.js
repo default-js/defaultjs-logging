@@ -13,12 +13,13 @@ describe("LoggerTest", () => {
 	});
 	
 	it("check loaded logger configs", async () => {		
-		const config = LoggerFactory.config();
+		const config = await LoggerFactory.config();
 		expect(config.length).toBe(configEntries.length);
 	});
 	
 	it("is logger correct", async () => {
 		expect(logger).toBeDefined();
-		expect(await logger.config.logLevel).toBe(LogLevel.TRACE); 
+		const config = await logger.config;
+		expect(config.logLevel).toBe(LogLevel.TRACE); 
 	});
 });

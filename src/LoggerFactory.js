@@ -22,7 +22,7 @@ class LoggerFactory {
 
 	async config(config){
 		if(arguments.length == 0)
-			return this.__config__;
+			return this.__config__.data;
 		
 		this.__config__ = new Config(config);
 		updateLogger(this.__config__);
@@ -30,4 +30,6 @@ class LoggerFactory {
 
 }
 
-export default LoggerFactory;
+const INSTANCE = new LoggerFactory();
+
+export default INSTANCE;

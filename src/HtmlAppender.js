@@ -23,5 +23,5 @@ class HtmlAppender extends Appender {
 }
 
 const INSTANCE = new HtmlAppender();
-Appender.register("html", INSTANCE);
+Appender.register("HtmlAppender", INSTANCE);
 export default INSTANCE;
