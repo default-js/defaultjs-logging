@@ -1,21 +1,24 @@
-import "../node_modules/dom-api-extension";
-import "../browser-index";
+import "@default-js/defaultjs-extdom";
+import {LoggerFactory, LogLevel, ConsoleAppender, MemoryAppender, HtmlAppender, InteligentBrowserAppender} from "../index";
 import logging from "./data/logging.json";
 
-describe("LoggerTest", function() {
-	beforeAll(function(){
-		this.configEntries = logging.configs.length;
-		defaultjs.logging.LoggerFactory.setConfig(logging.configs);
-		this.logger = defaultjs.logging.LoggerFactory.newLogger("test.LoggerTest");
+describe("LoggerTest", () => {
+	let logger = null;
+	let configEntries = null;
+
+	beforeAll(async () => {
+		configEntries = logging.configs;
+		await LoggerFactory.config(logging.configs);
+		logger = LoggerFactory.newLogger("test.LoggerTest");
 	});
 	
-	it("check loaded logger configs", function(){		
-		let config = defaultjs.logging.LoggerFactory.getConfig();
-		expect(config.length).toBe(this.configEntries);
+	it("check loaded logger configs", async () => {		
+		const config = LoggerFactory.config();
+		expect(config.length).toBe(configEntries.length);
 	});
 	
-	it("is logger correct", function(){
-		expect(this.logger).toBeDefined();
-		expect(this.logger.logLevel).toBe(defaultjs.logging.LogLevel.TRACE); 
+	it("is logger correct", async () => {
+		expect(logger).toBeDefined();
+		expect(await logger.config.logLevel).toBe(LogLevel.TRACE); 
 	});
 });

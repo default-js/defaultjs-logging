@@ -1,8 +1,10 @@
+import Appender from "./Appender";
 import LogLevel from "./LogLevel";
 import DateUtils from "./utils/DateUtils";
 
-const ConsoleAppender = {
-	logMessage : function(aMessage, anException, aLoggerName, aDate, aLogLevel) {
+
+class ConsoleAppender extends Appender{
+	logMessage (aMessage, anException, aLoggerName, aDate, aLogLevel){
 		if (LogLevel.NOLOG == aLogLevel)
 			return;
 		let log = [];
@@ -35,5 +37,8 @@ const ConsoleAppender = {
 		
 		appender.apply(console, log);	
 	}
-};
-export default ConsoleAppender;
+}
+
+const INSTANCE = new ConsoleAppender();
+Appender.register("console", INSTANCE);
+export default INSTANCE;

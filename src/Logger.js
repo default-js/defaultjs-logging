@@ -1,65 +1,52 @@
 import LogLevel from "./LogLevel";
 
-const Logger = function(aName, aLogLevel, aLogAppenders) {
-	this.name = aName;
-	this.logLevel = aLogLevel;
-	this.appenders = aLogAppenders || [];
-};
+class Logger {
+	constructor(name, config) {
+		this.name = name;
+		this.__config__ = config;
+	}
 
-Logger.prototype.isErrorEnabled = function() {
-	return this.logLevel.isIncluded(LogLevel.ERROR);
-};
-Logger.prototype.isWarnEnabled = function() {
-	return this.logLevel.isIncluded(LogLevel.WARN);
-};
-Logger.prototype.isInfoEnabled = function() {
-	return this.logLevel.isIncluded(LogLevel.INFO);
-};
-Logger.prototype.isDebugEnabled = function() {
-	return this.logLevel.isIncluded(LogLevel.DEBUG);
-};
-Logger.prototype.isTraceEnabled = function() {
-	return this.logLevel.isIncluded(LogLevel.TRACE);
-};
+	get config() {
+		return this.__config__;
+	}
 
-Logger.prototype.logError = function(aMessage, aException) {
-	return this.log(aMessage, aException, LogLevel.ERROR);
-};
+	set config(config) {
+		this.__config__ = config;
+	}
 
-Logger.prototype.logWarn = function(aMessage, aException) {
-	return this.log(aMessage, aException, LogLevel.WARN);
-};
+	logError(aMessage, aException) {
+		return this.log(aMessage, aException, LogLevel.ERROR);
+	}
 
-Logger.prototype.logInfo = function(aMessage, aException) {
-	return this.log(aMessage, aException, LogLevel.INFO);
-};
+	logWarn(aMessage, aException) {
+		this.log(aMessage, aException, LogLevel.WARN);
+	}
 
-Logger.prototype.logDebug = function(aMessage, aException) {
-	return this.log(aMessage, aException, LogLevel.DEBUG);
-};
+	logInfo(aMessage, aException) {
+		this.log(aMessage, aException, LogLevel.INFO);
+	}
 
-Logger.prototype.logTrace = function(aMessage, aException) {
-	return this.log(aMessage, aException, LogLevel.TRACE);
-};
+	logDebug(aMessage, aException) {
+		this.log(aMessage, aException, LogLevel.DEBUG);
+	}
 
-Logger.prototype.log = function(aMessage, anException, aLogLevel) {
-	if(!this.logLevel.isIncluded(aLogLevel))
-		return Promise.resolve();
-	
-	if (!this.appenders.length === 0)
-		return Promise.resolve();
+	asynclogTrace(aMessage, aException) {
+		this.log(aMessage, aException, LogLevel.TRACE);
+	}
 
-	return new Promise((function(resolve){
-		setTimeout((function(){
-			let results = [];
-			for (let i = 0; i < this.appenders.length; i++){
-				let result = this.appenders[i].logMessage(aMessage, anException, this.name,new Date(), aLogLevel);
-				if(result)
-					results.push(result);
-			}
-			
-			Promise.all(results).then(resolve);			
-		}).bind(this), 100);
-	}).bind(this));
-};
+	async log(aMessage, anException, aLogLevel) {
+		const config = await this.config;
+		if (!config.logLevel.isIncluded(aLogLevel)) return;
+		if (!config.appenders.length === 0) return;
+
+		const name = this.name;
+		const { appenders } = config;
+		const date = new Data();
+
+		setTimeout(async () => {
+			for (let appender of appenders) 
+				appender.logMessage(aMessage, anException, name, date, aLogLevel);
+		}, 100);
+	}
+}
 export default Logger;

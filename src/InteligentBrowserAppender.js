@@ -1,24 +1,27 @@
+import Appender from "./Appender";
 import HtmlAppender from "./HtmlAppender";
 import ConsoleAppender from "./ConsoleAppender";
 import MemoryAppender from "./MemoryAppender";
 
 let appender;
-const getAppender = function() {
-	if (this.appender) {		
+const getAppender = () => {
+	if (appender) {		
 		if (console)
-			this.appender = ConsolenAppender;
+			appender = ConsoleAppender;
 		else if (HtmlAppender.isAvailable())
-			this.appender = HtmlAppender;
+			appender = HtmlAppender;
 		else
-			this.appender = MemoryAppender;
+			appender = MemoryAppender;
 	}
 	
-	return this.appender;
+	return appender;
 };
-const InteligentBrowserAppender = {
-	logMessage : function(aMessage, anException, aLoggerName, aDate, aLogLevel) {
+class IntelligentBrowserAppender extends Appender {
+	logMessage(aMessage, anException, aLoggerName, aDate, aLogLevel) {
 		getAppender().logMessage(aMessage, anException, aLoggerName, aDate, aLogLevel);
 	}
 };
 
-export default InteligentBrowserAppender;
+const INSTANCE = new InteligentBrowserAppender();
+Appender.register("intelligent", INSTANCE);
+export default INSTANCE;
