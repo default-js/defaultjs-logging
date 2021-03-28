@@ -34,16 +34,15 @@ class Logger {
 		this.log(aMessage, aException, LogLevel.TRACE);
 	}
 
-	async log(aMessage, anException, aLogLevel) {		
-			const name = this.name;
-			const date = new Date();
-			
+	async log(aMessage, anException, aLogLevel) {
+		const name = this.name;
+		const date = new Date();
+
 		setTimeout(async () => {
 			const config = await this.config;
 			if (!config.logLevel.isIncluded(aLogLevel)) return;
 			const { appenders } = config;
-			for (let appender of appenders)
-				appender.logMessage(aMessage, anException, name, date, aLogLevel);
+			for (let appender of appenders) appender.logMessage(aMessage, anException, name, date, aLogLevel);
 		}, 100);
 	}
 }
