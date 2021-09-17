@@ -2,34 +2,22 @@ import Config from "./Config";
 import Logger from "./Logger";
 
 const LOGGERMAP = new Map();
-
-const updateLogger = (config) => {	
-	for (let [name, logger] of LOGGERMAP)
-		logger.config = config.loggerConfig(name);
+let CONFIG = new Config();
+const updateLogger = () => {
+	for (let [name, logger] of LOGGERMAP) logger.config = CONFIG.loggerConfig(name);
 };
 
-class LoggerFactory {
-	constructor() {
-		this.__config__ = new Config(); 
-	}
+export const newLogger = (name) => {
+	if (!LOGGERMAP.has(name)) LOGGERMAP.set(name, new Logger(name, CONFIG.loggerConfig(name)));
 
-	newLogger(name) {
-		if (!LOGGERMAP.has(name))
-			LOGGERMAP.set(name, new Logger(name, this.__config__.loggerConfig(name)));
+	return LOGGERMAP.get(name);
+};
 
-		return LOGGERMAP.get(name);
-	}
+export const config = async function(config) {
+	if (arguments.length == 0) return CONFIG.data;
 
-	async config(config){
-		if(arguments.length == 0)
-			return this.__config__.data;
-		
-		this.__config__ = new Config(config);
-		updateLogger(this.__config__);
-	}
+	CONFIG = new Config(await config);
+	updateLogger();
+};
 
-}
-
-const INSTANCE = new LoggerFactory();
-
-export default INSTANCE;
+export default { newLogger, config };
