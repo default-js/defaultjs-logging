@@ -49,8 +49,9 @@
 	},
 	"files": [
 		"index.js",
-		"*-bundle.js",
+		"browser.js",
 		"src/**",
+		"dist/**",
 		"LICENSE",
 		"README.md"
 	]
