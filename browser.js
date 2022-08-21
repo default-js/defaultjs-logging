@@ -9,14 +9,14 @@ import LoggerFactory from "./src/LoggerFactory";
 const global = self || global || window || this || {};
 global.defaultjs = global.defaultjs || {};
 global.defaultjs.logging = global.defaultjs.logging || {
-	VERSION : "${version}",
-	utils : utils,
-	ConsoleAppender : ConsoleAppender,
-	ConsolenAppender : ConsoleAppender,
-	HtmlAppender : HtmlAppender,
-	MemoryAppender : MemoryAppender,
-	InteligentBrowserAppender : InteligentBrowserAppender,
-	LogLevel : LogLevel,
-	Logger : Logger,
-	LoggerFactory : LoggerFactory
+	VERSION: "${version}",
+	ConsoleAppender,
+	HtmlAppender,
+	MemoryAppender,
+	InteligentBrowserAppender,
+	LogLevel,
+	Logger,
+	LoggerFactory,
 };
+
+export { ConsoleAppender, HtmlAppender, MemoryAppender, InteligentBrowserAppender, LogLevel, Logger, LoggerFactory };
